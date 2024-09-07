@@ -79,15 +79,14 @@ def cruzamento(pais, taxa_cruzamento, dimensoes):
 
     return resultado
 
-def mutacao(populacao, taxa_mutacao):
+def mutacao(populacao, taxa_mutacao, min_gene, max_gene):
     for cromossomo in populacao:
        for i in range(len(cromossomo)):
             valor = random.uniform(0, 1)
             if valor <= taxa_mutacao:
-                cromossomo[i] = random.randint(-100, 100)
+                cromossomo[i] = random.randint(min_gene, max_gene)
 
     return populacao
-
 
 
 def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_mutacao, min_gene, max_gene, forma_selecao):
@@ -106,16 +105,17 @@ def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_m
             pais = torneio(populacao, fitness)
 
         pop_cruzamento = cruzamento(pais, taxa_cruzamento, dimensoes)
-        pop_mutacao = mutacao(pop_cruzamento, taxa_mutacao)
+        populacao = mutacao(pop_cruzamento, taxa_mutacao, min_gene, max_gene)
 
-        # print(result)
+        print("Geração {0} - Melhor fitness: {1}".format(i, min(fitness)))
 
-        print("Geração {0} - Melhor fitness: {1}".format(i, min([sphere(cromossomo) for cromossomo in pop_mutacao])))
+    return min(populacao, key=sphere)
 
-        populacao = pop_mutacao
-
-print("Selecione forma de seleção: 0 - Roleta, 1 - Torneio")
+print("Selecione forma de seleção: \n1 - Roleta | 2 - Torneio (padrão)")
 input_selecao = int(input())
 
-alg_genetico(20, 10000, 30, 0.9, 0.01, -100, 100, input_selecao)
+resultado = alg_genetico(30, 20, 30, 0.9, 0.01, -100, 100, input_selecao)
+
+print("----- Melhor resultado -----")
+print(resultado)
 # consertar quando tamanho da população for impar
