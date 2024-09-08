@@ -1,3 +1,5 @@
+import math
+
 def sphere(vetor):
   resultado = 0
   

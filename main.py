@@ -58,7 +58,7 @@ def torneio(populacao, fitness):
 
     return resultado	
 
-def cruzamento(pais, taxa_cruzamento, dimensoes):
+def cruzamento(pais, taxa_cruzamento, dimensoes, pontos = 1):
     resultado = []
 
     for i in range(0, len(pais), 2):
@@ -67,13 +67,29 @@ def cruzamento(pais, taxa_cruzamento, dimensoes):
         if(valor > taxa_cruzamento):
             resultado += pais[i:i+2]  
         else:
-            ponto_corte = random.randint(1, dimensoes-1)
+            if pontos > dimensoes - 1:
+                pontos = dimensoes - 1
+            
+            pontos_corte = sorted(random.sample(range(1, dimensoes-1), pontos))
 
             pai1 = pais[i]
             pai2 = pais[i+1]
 
-            filho1 = pai1[:ponto_corte] + pai2[ponto_corte:]
-            filho2 = pai2[:ponto_corte] + pai1[ponto_corte:]
+            filho1 = []
+            filho2 = []
+            aux = 0
+
+            for i in range(0, len(pontos_corte)):
+                if(i % 2 == 0):
+                    filho1 += pai1[aux:pontos_corte[i]]
+                    filho2 += pai2[aux:pontos_corte[i]]
+                else:
+                    filho1 += pai2[aux:pontos_corte[i]]
+                    filho2 += pai1[aux:pontos_corte[i]]
+                aux = pontos_corte[i]
+
+            filho1 += pai1[aux:]
+            filho2 += pai2[aux:]
 
             resultado.extend([filho1, filho2])
 
@@ -89,7 +105,7 @@ def mutacao(populacao, taxa_mutacao, min_gene, max_gene):
     return populacao
 
 
-def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_mutacao, min_gene, max_gene, forma_selecao):
+def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_mutacao, min_gene, max_gene, forma_selecao, pontos):
     
     populacao = gerar_populacao(tamanho_populacao, dimensoes, min_gene, max_gene)
 
@@ -104,7 +120,7 @@ def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_m
         else:
             pais = torneio(populacao, fitness)
 
-        pop_cruzamento = cruzamento(pais, taxa_cruzamento, dimensoes)
+        pop_cruzamento = cruzamento(pais, taxa_cruzamento, dimensoes, pontos)
         populacao = mutacao(pop_cruzamento, taxa_mutacao, min_gene, max_gene)
 
         print("Geração {0} - Melhor fitness: {1}".format(i, min(fitness)))
@@ -113,8 +129,10 @@ def alg_genetico(tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_m
 
 print("Selecione forma de seleção: \n1 - Roleta | 2 - Torneio (padrão)")
 input_selecao = int(input())
+print("Informe quantos pontos de corte serão realizados: ")
+input_pontos = int(input())
 
-resultado = alg_genetico(30, 20, 30, 0.9, 0.01, -100, 100, input_selecao)
+resultado = alg_genetico(30, 10000, 30, 0.9, 0.01, -100, 100, input_selecao, input_pontos)
 
 print("----- Melhor resultado -----")
 print(resultado)
