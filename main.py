@@ -38,7 +38,7 @@ def roleta(cromossomo, probabilidades):
     sorteio = random.uniform(0, 1)
 
     for i, limite in enumerate(acumulado):
-        if sorteio <= limite:
+        if sorteio >= limite:
             return cromossomo[i]
         
 def torneio(populacao, fitness):
@@ -60,6 +60,9 @@ def torneio(populacao, fitness):
 
 def cruzamento(pais, taxa_cruzamento, dimensoes, pontos = 1):
     resultado = []
+
+    if len(pais) % 2 != 0:
+        pais.pop(random.randint(0, len(pais)-1))
 
     for i in range(0, len(pais), 2):
         valor = random.uniform(0, 1)
@@ -136,4 +139,3 @@ resultado = alg_genetico(30, 10000, 30, 0.9, 0.01, -100, 100, input_selecao, inp
 
 print("----- Melhor resultado -----")
 print(resultado)
-# consertar quando tamanho da população for impar
