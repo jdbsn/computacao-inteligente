@@ -5,12 +5,11 @@ from funcoes import *
 class Pso:
 
     inercia = 0.9 # w
-    tipo_inecria = 1 # pode ser dentro da função
     inercia_max = 1
     inercia_min = 0.4
     coef_cognitivo = 2.05
     coef_social = 2.05
-    qtd_iteracoes = 100
+    qtd_iteracoes = 1000
     qtd_particulas = 10
     melhor_global = []
     melhor_fitness = None
@@ -40,21 +39,7 @@ class Pso:
                 self.melhor_fitness = fitness
                 self.melhor_global = particula.posicao[:]
 
-    def calcular_velocidade(self, particula):
-        nova_velocidade = []
-
-        for i in range(len(particula.velocidade)):
-            i_pessoal = self.coef_cognitivo * random.uniform(0, 1) * (particula.melhor_pos[i] - particula.posicao[i])
-            i_global = self.coef_cognitivo * random.uniform(0, 1) * (self.melhor_global[i] - particula.posicao[i])
-            
-            velocidade = self.inercia * particula.velocidade[i] + i_pessoal + i_global
-
-            nova_velocidade.append(velocidade)
-
-        return nova_velocidade
-
-
-    def pso(self):
+    def pso(self, tipo_inecria = 0):
         self.gerar_populacao(self.qtd_particulas, 2, 0, 100)
 
         for i in self.populacao:
@@ -73,15 +58,19 @@ class Pso:
             print(self.melhor_global)
 
             for p in self.populacao:
-                novas_velocidades = self.calcular_velocidade(p)
-                p.velocidade = novas_velocidades
+                p.calcular_velocidade(self.melhor_global, self.coef_cognitivo, self.coef_social, self.inercia)
                 p.mover()
 
-            # self.decaimento_linear(i)
+            if(tipo_inecria == 1):
+                self.decaimento_linear(i)
 
             # print("---- Novas velocidades ----")
             # for i in self.populacao:
             #     print(i.velocidade)
 
 pso = Pso()
-pso.pso()
+
+print("Selecione o fator de inércia: \n 0 - Constante (padrão) | 1 - Decaimento linear")
+tipo_inecria = int(input())
+
+pso.pso(tipo_inecria)
