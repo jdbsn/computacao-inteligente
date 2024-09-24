@@ -91,7 +91,7 @@ input_selecao = int(input())
 print("Informe quantos pontos de corte serão realizados: ")
 input_pontos = int(input())
 
-resultado = alg_genetico(30, 10000, 30, 0.9, 0.01, -100, 100, input_selecao, input_pontos)
+resultado = alg_genetico(30, 20, 30, 0.9, 0.01, -100, 100, input_selecao, input_pontos)
 
 print("----- Melhor resultado -----")
 print(resultado)
