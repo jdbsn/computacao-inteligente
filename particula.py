@@ -8,9 +8,10 @@ class Particula:
         self.melhor_pos = melhor_pos
         self.melhor_fitness = melhor_fitness
 
-    def mover(self):
+    def mover(self, limite_min, limite_max):
         for i in range(len(self.posicao)):
-            self.posicao[i] += self.velocidade[i]
+            nova_posicao = self.posicao[i] + self.velocidade[i]
+            self.posicao[i] = min(max(nova_posicao, limite_min), limite_max)
 
     def calcular_velocidade(self, melhor_global, coef_cognitivo, coef_social, inercia):
         nova_velocidade = []
