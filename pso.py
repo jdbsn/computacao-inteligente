@@ -11,10 +11,10 @@ class Pso:
     inercia_min = 0.4
     coef_cognitivo = 2.05
     coef_social = 2.05
-    qtd_iteracoes = 2
+    qtd_iteracoes = 50
     qtd_particulas = 10
     melhor_global = []
-    melhor_fitness = None
+    melhor_fitness = float('inf')
     populacao = []
     dimensoes = 50
     limite_min = -10
@@ -23,12 +23,18 @@ class Pso:
     def decaimento_linear(self, iteracao_atual):
         self.inercia = (self.inercia_max - self.inercia_min) * ((self.qtd_iteracoes - iteracao_atual) / self.qtd_iteracoes) + self.inercia_min
 
-    def gerar_populacao(self, qtd_particulas, dimensoes, limite_min, limite_max):
+    def gerar_populacao(self, qtd_particulas, dimensoes, limite_min, limite_max, tipo_cooperacao):
         for _ in range(qtd_particulas):
             posicao = [random.randint(limite_min, limite_max) for _ in range(dimensoes)]
             velocidade = [random.randint(limite_min * 0.2, limite_max * 0.2) for _ in range(dimensoes)]
 
             self.populacao.append(Particula(posicao, velocidade, posicao, None))
+
+        if tipo_cooperacao == 1:
+            print("Cooperação Local")
+            for i in range(qtd_particulas):
+                self.populacao[i].vizinho_esq = self.populacao[i - 1]
+                self.populacao[i].vizinho_dir= self.populacao[(i + 1) % qtd_particulas]
 
     def avaliar_particula(self):
         fitness_iteracao = []
@@ -47,12 +53,11 @@ class Pso:
 
         return fitness_iteracao
 
-    def pso(self, tipo_inecria = 0):
-        self.gerar_populacao(self.qtd_particulas, self.dimensoes, self.limite_min, self.limite_max)
+    def pso(self, tipo_inecria, tipo_coop):
+        self.gerar_populacao(self.qtd_particulas, self.dimensoes, self.limite_min, self.limite_max, tipo_coop)
 
         for i in self.populacao:
             print(i.posicao, end=" ")
-
         print()
 
         for i in range(self.qtd_iteracoes):
@@ -63,8 +68,8 @@ class Pso:
             print("Iteração {} - Fitness: {}".format(i, self.melhor_fitness))
 
             for p in self.populacao:
-                p.calcular_velocidade(self.melhor_global, self.coef_cognitivo, self.coef_social, self.inercia)
                 p.mover(self.limite_min, self.limite_max)
+                p.calcular_velocidade(self.melhor_global, self.coef_cognitivo, self.coef_social, self.inercia, tipo_coop)
 
             if(tipo_inecria == 1):
                 self.decaimento_linear(i)
@@ -73,8 +78,11 @@ class Pso:
 pso = Pso()
 boxplot = Boxplot()
 
-print("Selecione o fator de inércia: \n 0 - Constante (padrão) | 1 - Decaimento linear")
+print("Selecione o fator de inércia: \n 0 - Constante | 1 - Decaimento linear")
 tipo_inecria = int(input())
 
-pso.pso(tipo_inecria)
+print("Selecione o tipo de: \n 0 - Global | 1 - Local")
+tipo_coop = int(input())
+
+pso.pso(tipo_inecria, tipo_coop)
 boxplot.exibir_boxplot()
