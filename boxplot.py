@@ -9,5 +9,7 @@ class Boxplot:
 
     def exibir_boxplot(self):
         plt.boxplot(self.data) 
-        plt.title('Basic Boxplot') 
+        plt.title('Boxplot de Execuções em Diferentes Cenários', fontsize=14)
+        plt.xlabel('Cenários', fontsize=12)
+        plt.ylabel('Valores das Execuções', fontsize=12)
         plt.show()
