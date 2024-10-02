@@ -1,7 +1,7 @@
 import random
 
-from particula import Particula
-from funcoes import *
+from alg_particulas.particula import Particula
+from utils.funcoes import *
 
 class Pso:
 

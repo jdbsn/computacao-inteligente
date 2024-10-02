@@ -1,7 +1,11 @@
 import random
+import sys
+import os
 
-from selecao import Selecao
-from funcoes import *
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from alg_genetico.selecao import Selecao
+from utils.funcoes import *
 
 def gerar_populacao(tamanho_populacao, dimensoes, min_gene, max_gene):
     populacao = []

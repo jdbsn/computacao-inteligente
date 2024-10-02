@@ -1,6 +1,11 @@
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from tqdm import tqdm
-from boxplot import Boxplot
-from pso import Pso
+from utils.boxplot import Boxplot
+from alg_particulas.pso import Pso
 
 
 def main():
