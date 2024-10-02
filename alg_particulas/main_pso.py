@@ -18,6 +18,7 @@ def main():
     COEF_COGNITIVO = 2.05
     COEF_SOCIAL = 2.05
     INERCIA = 0.9
+    QTD_INTERACOES = 1000
 
     cenarios = [
         (0, 0, "Constante - Global"),
@@ -31,7 +32,7 @@ def main():
     for tipo_inecria, tipo_coop, descricao in cenarios:
         resultado_cenario = []
         for _ in tqdm(range(30), desc=f'{descricao}'):
-            pso = Pso(COEF_COGNITIVO, COEF_SOCIAL, INERCIA)
+            pso = Pso(COEF_COGNITIVO, COEF_SOCIAL, INERCIA, QTD_INTERACOES)
             fitness = pso.executar(tipo_inecria, tipo_coop)
             resultado_cenario.append(fitness)
         boxplot.adicionar_dados(resultado_cenario)

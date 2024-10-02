@@ -5,10 +5,11 @@ from utils.funcoes import *
 
 class Pso:
 
-    def __init__(self, coef_cognitivo, coef_social, inercia):
+    def __init__(self, coef_cognitivo, coef_social, inercia, qtd_iteracoes):
         self.coef_cognitivo = coef_cognitivo
         self.coef_social = coef_social
         self.inercia = inercia
+        self.qtd_iteracoes = qtd_iteracoes
         self.melhor_global = []
         self.melhor_fitness = float('inf')
         self.populacao = []
@@ -17,7 +18,6 @@ class Pso:
         self.dimensoes = 30
         self.inercia_max = 1
         self.inercia_min = 0.4
-        self.qtd_iteracoes = 200
         self.qtd_particulas = 30
 
     def decaimento_linear(self, iteracao_atual):
@@ -36,11 +36,8 @@ class Pso:
                 self.populacao[i].vizinho_dir= self.populacao[(i + 1) % qtd_particulas]
 
     def avaliar_particula(self):
-        # fitness_iteracao = []
-
         for particula in self.populacao:
             fitness = sphere(particula.posicao)
-            # fitness_iteracao.append(fitness)
 
             if(particula.melhor_fitness is None or fitness < particula.melhor_fitness):
                 particula.melhor_fitness = fitness
@@ -50,8 +47,6 @@ class Pso:
                 self.melhor_fitness = fitness
                 self.melhor_global = particula.posicao[:]
 
-        # return fitness_iteracao
-
     def executar(self, tipo_inecria, tipo_coop):
         self.gerar_populacao(self.qtd_particulas, self.dimensoes, self.limite_min, self.limite_max, tipo_coop)
 
@@ -60,13 +55,7 @@ class Pso:
         # print())
 
         for i in range(self.qtd_iteracoes):
-
             self.avaliar_particula()
-
-            # fitness_iteracao = self.avaliar_particula()
-
-            # if i % 100 == 0:
-            #     boxplot.adicionar_dados(fitness_iteracao)
 
             # print("Iteração {} - Fitness: {}".format(i, self.melhor_fitness))
 
