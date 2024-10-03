@@ -1,7 +1,9 @@
 import random
 
-from alg_particulas.particula import Particula
-from utils.funcoes import *
+from tqdm import tqdm
+
+from alg_particulas.Particula import Particula
+from utils.Funcoes import *
 
 class Pso:
 
@@ -19,6 +21,7 @@ class Pso:
         self.inercia_max = 1
         self.inercia_min = 0.4
         self.qtd_particulas = 30
+        self.melhores_fitness = []
 
     def decaimento_linear(self, iteracao_atual):
         self.inercia = (self.inercia_max - self.inercia_min) * ((self.qtd_iteracoes - iteracao_atual) / self.qtd_iteracoes) + self.inercia_min
@@ -50,12 +53,10 @@ class Pso:
     def executar(self, tipo_inecria, tipo_coop):
         self.gerar_populacao(self.qtd_particulas, self.dimensoes, self.limite_min, self.limite_max, tipo_coop)
 
-        # for i in self.populacao:
-        #     print(i.vizinho_esq.posicao, end=" ")
-        # print())
-
-        for i in range(self.qtd_iteracoes):
+        for i in tqdm(range(self.qtd_iteracoes)):
             self.avaliar_particula()
+            
+            self.melhores_fitness.append(self.melhor_fitness)
 
             # print("Iteração {} - Fitness: {}".format(i, self.melhor_fitness))
 

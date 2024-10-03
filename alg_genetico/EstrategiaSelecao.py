@@ -1,6 +1,6 @@
 import random
 
-class Selecao:
+class EstrategiaSelecao:
     
     @staticmethod
     def f_fitnes(populacao, tamanho_populacao, fitness):
@@ -12,7 +12,7 @@ class Selecao:
 
         selecionados = []
         for _ in range(tamanho_populacao):
-            cromossomo_selecionado = Selecao.roleta(populacao, probabilidades)
+            cromossomo_selecionado = EstrategiaSelecao.roleta(populacao, probabilidades)
             
             selecionados.append(cromossomo_selecionado)
 
