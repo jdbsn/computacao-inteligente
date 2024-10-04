@@ -7,20 +7,18 @@ from tqdm import tqdm
 from utils.Boxplot import Boxplot
 from utils.GraficoConvergencia import GraficoConvergencia
 from alg_particulas.AlgoritmoPSO import Pso
+from utils.Funcoes import *
 
+COEF_COGNITIVO = 2.05
+COEF_SOCIAL = 2.05
+INERCIA = 0.9
+QTD_INTERACOES = 4000
+QTD_PARTICULAS = 30
 
-def main():
-    # print("Selecione o fator de inércia: \n 0 - Constante | 1 - Decaimento linear")
-    # tipo_inecria = int(input())
+boxplot = Boxplot()
+convergencia = GraficoConvergencia()
 
-    # print("Selecione o tipo de: \n 0 - Global | 1 - Local")
-    # tipo_coop = int(input())
-
-    COEF_COGNITIVO = 2.05
-    COEF_SOCIAL = 2.05
-    INERCIA = 0.9
-    QTD_INTERACOES = 4000
-
+def avaliar_sphere():
     cenarios = [
         (0, 0, "Constante - Global"),
         (0, 1, "Constante - Local"),
@@ -28,25 +26,25 @@ def main():
         (1, 1, "Decaimento - Local") 
     ]
 
-    boxplot = Boxplot()
-    convergencia = GraficoConvergencia()
-
     for tipo_inecria, tipo_coop, descricao in cenarios:
         resultado_cenario = []
+        valores_convergencia = []
 
-        for _ in tqdm(range(1), desc=f'{descricao}'):
-            pso = Pso(COEF_COGNITIVO, COEF_SOCIAL, INERCIA, QTD_INTERACOES)
+        for _ in tqdm(range(4), desc=f'{descricao}'):
+            pso = Pso(COEF_COGNITIVO, COEF_SOCIAL, INERCIA, QTD_INTERACOES, QTD_PARTICULAS, sphere)
             fitness = pso.executar(tipo_inecria, tipo_coop)
             resultado_cenario.append(fitness)
-            convergencia.adicionar_dados(pso.melhores_fitness, descricao)
+            valores_convergencia.append(pso.melhores_fitness)
 
         boxplot.adicionar_dados(resultado_cenario)
+        media = [sum(elementos) / len(elementos) for elementos in zip(*valores_convergencia)]
+        print(media[-1])
+        convergencia.adicionar_dados(media, descricao)
         print()
 
-    boxplot.exibir_boxplot()
+    boxplot.exibir_boxplot('Boxplot de Execuções em Diferentes Cenários - PSO')
 
-
-    # convergencia.exibir_convergencia()
+    convergencia.exibir_convergencia("Convergência da Função Sphere - PSO")
 
  
-main()
+avaliar_sphere()

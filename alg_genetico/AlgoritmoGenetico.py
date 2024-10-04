@@ -4,6 +4,7 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from tqdm import tqdm
 from alg_genetico.EstrategiaSelecao import EstrategiaSelecao
 from utils.Funcoes import *
 
@@ -17,6 +18,7 @@ class AlgoritmoGenetico:
         self.taxa_mutacao = taxa_mutacao
         self.min_gene = min_gene
         self.max_gene = max_gene
+        self.melhores_fitness = []
 
     def gerar_populacao(self):
         populacao = []
@@ -24,7 +26,7 @@ class AlgoritmoGenetico:
         for _ in range(self.tamanho_populacao):
             cromossomo = []
             for _ in range(self.dimensoes):    
-                cromossomo.append(random.randint(self.min_gene, self.max_gene))
+                cromossomo.append(random.uniform(self.min_gene, self.max_gene))
             populacao.append(cromossomo)
 
         return populacao
@@ -74,15 +76,18 @@ class AlgoritmoGenetico:
             for i in range(len(cromossomo)):
                     valor = random.uniform(0, 1)
                     if valor <= self.taxa_mutacao:
-                        cromossomo[i] = random.randint(self.min_gene, self.max_gene)
+                        cromossomo[i] = random.uniform(self.min_gene, self.max_gene)
 
         return populacao
 
     def alg_genetico(self, forma_selecao, pontos):
         populacao = self.gerar_populacao()
+        fitness = []
 
-        for i in range(self.geracoes):
+        for _ in tqdm(range(self.geracoes), leave=False):
             fitness = [sphere(cromossomo) for cromossomo in populacao]
+
+            self.melhores_fitness.append(min(fitness))
 
             if(forma_selecao == 0):
                 pais = EstrategiaSelecao.f_fitness(populacao, self.tamanho_populacao, fitness)
@@ -92,6 +97,6 @@ class AlgoritmoGenetico:
             pop_cruzamento = self.cruzamento(pais, pontos)
             populacao = self.mutacao(pop_cruzamento)
 
-            print("Geração {0} - Melhor fitness: {1}".format(i, min(fitness)))
+            # print("Geração {0} - Melhor fitness: {1}".format(i, min(fitness)))
 
-        return min(populacao, key=sphere)
+        return min(fitness)

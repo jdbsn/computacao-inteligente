@@ -2,11 +2,11 @@ import random
 
 class Particula:
 
-    def __init__(self, posicao, velocidade, melhor_pos, melhor_fitness):
+    def __init__(self, posicao, velocidade, melhor_pos):
         self.posicao = posicao
         self.velocidade = velocidade
         self.melhor_pos = melhor_pos
-        self.melhor_fitness = melhor_fitness
+        self.melhor_fitness = float('inf')
         self.vizinho_esq = None
         self.vizinho_dir = None
 
@@ -38,3 +38,4 @@ class Particula:
             return self.vizinho_dir.melhor_pos
         else:
             return self.melhor_pos
+        
