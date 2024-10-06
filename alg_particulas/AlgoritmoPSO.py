@@ -6,7 +6,7 @@ from alg_particulas.Particula import Particula
 
 class Pso:
 
-    def __init__(self, coef_cognitivo, coef_social, inercia, qtd_iteracoes, qtd_particulas, funcao):
+    def __init__(self, coef_cognitivo, coef_social, inercia, qtd_iteracoes, qtd_particulas, funcao, limite_min, limite_max):
         self.coef_cognitivo = coef_cognitivo
         self.coef_social = coef_social
         self.inercia = inercia
@@ -17,8 +17,8 @@ class Pso:
         self.melhor_fitness = float('inf')
         self.populacao = []
         self.melhores_fitness = []
-        self.limite_min = -100
-        self.limite_max = 100
+        self.limite_min = limite_min
+        self.limite_max = limite_max
         self.dimensoes = 30
         self.inercia_max = 0.9
         self.inercia_min = 0.4
@@ -31,7 +31,7 @@ class Pso:
 
     def gerar_populacao(self, qtd_particulas, dimensoes, limite_min, limite_max, tipo_cooperacao):
         for _ in range(qtd_particulas):
-            posicao = [random.randint(limite_min, limite_max) for _ in range(dimensoes)]
+            posicao = [random.uniform(limite_min, limite_max) for _ in range(dimensoes)]
             velocidade = [random.uniform(limite_min * 0.2, limite_max * 0.2) for _ in range(dimensoes)]
 
             self.populacao.append(Particula(posicao, velocidade, posicao))

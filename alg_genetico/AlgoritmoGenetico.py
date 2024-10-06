@@ -10,7 +10,7 @@ from utils.Funcoes import *
 
 class AlgoritmoGenetico:
 
-    def __init__(self, tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_mutacao, min_gene, max_gene,):
+    def __init__(self, tamanho_populacao, geracoes, dimensoes, taxa_cruzamento, taxa_mutacao, min_gene, max_gene, funcao):
         self.tamanho_populacao = tamanho_populacao
         self.geracoes = geracoes
         self.dimensoes = dimensoes
@@ -19,6 +19,7 @@ class AlgoritmoGenetico:
         self.min_gene = min_gene
         self.max_gene = max_gene
         self.melhores_fitness = []
+        self.funcao = funcao
 
     def gerar_populacao(self):
         populacao = []
@@ -85,7 +86,7 @@ class AlgoritmoGenetico:
         fitness = []
 
         for _ in tqdm(range(self.geracoes), leave=False):
-            fitness = [sphere(cromossomo) for cromossomo in populacao]
+            fitness = [self.funcao(cromossomo) for cromossomo in populacao]
 
             self.melhores_fitness.append(min(fitness))
 
