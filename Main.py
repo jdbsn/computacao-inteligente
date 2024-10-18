@@ -1,4 +1,7 @@
+import random
 from tqdm import tqdm
+
+from alg_colonia_abelhas.AlgoritmoColoniaAbelhas import AlgoritmoColoniaAbelhas
 from alg_genetico.AlgoritmoGenetico import AlgoritmoGenetico
 from alg_particulas.AlgoritmoPSO import Pso
 from utils.Boxplot import Boxplot
@@ -67,4 +70,37 @@ def avaliar_func():
         convergencia.exibir_convergencia("Convengência da Função Rastrigin - AG vs PSO")
 
 
-avaliar_func()
+# avaliar_func()
+
+def colonia_abelhas():
+    aca = AlgoritmoColoniaAbelhas(8, 10, 100, 1000, -100, 100)
+    aca.gerar_fonte_alimentacao()
+
+    print("Fonte Alimentação")
+    for a in aca.fonte_alimentacao:
+        print(a.posicao)
+
+    print("Abelhas:")
+    for i in range(len(aca.fonte_alimentacao)):
+        abelha = aca.fonte_alimentacao[i].abelha
+        print(abelha.posicao)
+
+        indice = i
+        while indice == i:
+            indice = random.randint(0, len(aca.fonte_alimentacao) - 1)
+
+        abelha.mover(aca.fonte_alimentacao[indice].posicao)
+
+    print("Abelhas após mover:")
+    for a in aca.fonte_alimentacao:
+        print(a.abelha.posicao)
+
+    for a in aca.fonte_alimentacao:
+        a.verificar_posicao(sphere)
+
+    print("Fonte Alimentação após verificar posição:")
+    for a in aca.fonte_alimentacao:
+        print(a.posicao)
+        print(a.fator_abandono)
+
+colonia_abelhas()
