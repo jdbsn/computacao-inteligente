@@ -28,7 +28,7 @@ class EstrategiaSelecao:
         sorteio = random.uniform(0, 1)
 
         for i, limite in enumerate(acumulado):
-            if sorteio >= limite:
+            if sorteio <= limite:
                 return cromossomo[i]
 
     @staticmethod        

@@ -73,7 +73,7 @@ def avaliar_func():
 # avaliar_func()
 
 def colonia_abelhas():
-    aca = AlgoritmoColoniaAbelhas(8, 10, 100, 1000, -100, 100)
+    aca = AlgoritmoColoniaAbelhas(8, 10, 100, 1000, -100, 100, sphere)
     aca.gerar_fonte_alimentacao()
 
     print("Fonte Alimentação")
@@ -81,26 +81,27 @@ def colonia_abelhas():
         print(a.posicao)
 
     print("Abelhas:")
-    for i in range(len(aca.fonte_alimentacao)):
-        abelha = aca.fonte_alimentacao[i].abelha
-        print(abelha.posicao)
-
-        indice = i
-        while indice == i:
-            indice = random.randint(0, len(aca.fonte_alimentacao) - 1)
-
-        abelha.mover(aca.fonte_alimentacao[indice].posicao)
-
-    print("Abelhas após mover:")
     for a in aca.fonte_alimentacao:
         print(a.abelha.posicao)
 
+    aca.mover_abelhas()
+
+    print("Abelhas empregadas após mover:")
     for a in aca.fonte_alimentacao:
-        a.verificar_posicao(sphere)
+        print(a.abelha.posicao)
+        
+    for a in aca.fonte_alimentacao:
+        a.verificar_posicao(sphere, a.abelha.posicao)
 
     print("Fonte Alimentação após verificar posição:")
     for a in aca.fonte_alimentacao:
-        print(a.posicao)
-        print(a.fator_abandono)
+        print(a.posicao, a.fator_abandono)
+
+    print("Explorar fontes alimentações:")
+    aca.explorar_fontes_alimentacoes()
+
+    print("Fonte Alimentação após abelhas observadoras:")
+    for a in aca.fonte_alimentacao:
+        print(a.posicao, " | Fator abandono: ", a.fator_abandono)
 
 colonia_abelhas()
