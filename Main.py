@@ -21,7 +21,6 @@ DIMENSOES = 30
 TAXA_CRUZAMENTO = 0.9
 TAXA_MUTACAO = 0.01
 
-
 cenarios = [
     # (1, 2, "Roleta - 2 pontos de corte (AG)", 1, 1, "Decaimento - Local (PSO)", sphere, -100, 100),
     (2, 2, "Torneio - 2 pontos de corte (AG)", 1, 1, "Decaimento - Local (PSO)", rastrigin, -30, 30),
@@ -69,39 +68,18 @@ def avaliar_func():
         boxplot.exibir_boxplot('Boxplot de Execuções da Função Rastrigin - AG vs PSO')
         convergencia.exibir_convergencia("Convengência da Função Rastrigin - AG vs PSO")
 
-
 # avaliar_func()
 
 def colonia_abelhas():
-    aca = AlgoritmoColoniaAbelhas(8, 10, 100, 1000, -100, 100, sphere)
-    aca.gerar_fonte_alimentacao()
+    aca = AlgoritmoColoniaAbelhas(TAMANHO_POPULACAO, 10, 1000, -100, 100, sphere)
 
-    print("Fonte Alimentação")
-    for a in aca.fonte_alimentacao:
-        print(a.posicao)
+    aca.executar(50)
 
-    print("Abelhas:")
-    for a in aca.fonte_alimentacao:
-        print(a.abelha.posicao)
+    print("Melhor resultado:", aca.melhor_resultado)
+    print("Melhor fitness:", aca.melhor_fitness)
 
-    aca.mover_abelhas()
-
-    print("Abelhas empregadas após mover:")
-    for a in aca.fonte_alimentacao:
-        print(a.abelha.posicao)
-        
-    for a in aca.fonte_alimentacao:
-        a.verificar_posicao(sphere, a.abelha.posicao)
-
-    print("Fonte Alimentação após verificar posição:")
-    for a in aca.fonte_alimentacao:
-        print(a.posicao, a.fator_abandono)
-
-    print("Explorar fontes alimentações:")
-    aca.explorar_fontes_alimentacoes()
-
-    print("Fonte Alimentação após abelhas observadoras:")
-    for a in aca.fonte_alimentacao:
-        print(a.posicao, " | Fator abandono: ", a.fator_abandono)
+    convergencia = GraficoConvergencia()
+    convergencia.adicionar_dados(aca.melhores_fitness, "Colônia de Abelhas")
+    convergencia.exibir_convergencia("Gráfico de Convergência - Colônia de Abelhas")
 
 colonia_abelhas()

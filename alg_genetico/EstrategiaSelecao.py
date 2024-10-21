@@ -3,12 +3,15 @@ import random
 class EstrategiaSelecao:
     
     @staticmethod
-    def f_fitnes(populacao, tamanho_populacao, fitness):
+    def f_fitnes(populacao, tamanho_populacao, fitness, inverso):
         total_fitness = sum(fitness)
         probabilidades = []
 
         for valor in fitness:
             probabilidades.append(valor/total_fitness)
+
+        if inverso:
+            probabilidades = [1 - valor for valor in probabilidades]
 
         selecionados = []
         for _ in range(tamanho_populacao):
