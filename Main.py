@@ -1,4 +1,3 @@
-import random
 from tqdm import tqdm
 
 from alg_colonia_abelhas.AlgoritmoColoniaAbelhas import AlgoritmoColoniaAbelhas
@@ -71,9 +70,9 @@ def avaliar_func():
 # avaliar_func()
 
 def colonia_abelhas():
-    aca = AlgoritmoColoniaAbelhas(TAMANHO_POPULACAO, 10, 1000, -100, 100, sphere)
+    aca = AlgoritmoColoniaAbelhas(50, 20, 10000, -100, 100, sphere)
 
-    aca.executar(50)
+    aca.executar(5)
 
     print("Melhor resultado:", aca.melhor_resultado)
     print("Melhor fitness:", aca.melhor_fitness)
