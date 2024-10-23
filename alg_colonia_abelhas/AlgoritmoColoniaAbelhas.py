@@ -1,5 +1,7 @@
 import random
 
+from tqdm import tqdm
+
 from alg_colonia_abelhas.FonteAlimentacao import FonteAlimentacao
 from alg_colonia_abelhas.Abelha import Abelha
 from alg_genetico.EstrategiaSelecao import EstrategiaSelecao
@@ -57,7 +59,7 @@ class AlgoritmoColoniaAbelhas:
     def executar(self, criterio_abandono):
         self.gerar_fonte_alimentacao()
 
-        for _ in range(self.ciclos):
+        for _ in tqdm(range(self.ciclos), leave=False):
             for i in range(len(self.fonte_alimentacao)):
                 fonte_alimentacao = self.fonte_alimentacao[i]
                 self.mover_abelha(fonte_alimentacao.posicao, fonte_alimentacao.abelha, i)
@@ -74,3 +76,5 @@ class AlgoritmoColoniaAbelhas:
                 self.melhor_resultado = self.fonte_alimentacao[lista_fitness.index(menor_fitness)].posicao
             
             self.melhores_fitness.append(self.melhor_fitness)
+
+        return self.melhor_fitness

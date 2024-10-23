@@ -81,7 +81,7 @@ class AlgoritmoGenetico:
 
         return populacao
 
-    def alg_genetico(self, forma_selecao, pontos):
+    def executar(self, forma_selecao, pontos):
         populacao = self.gerar_populacao()
         fitness = []
 

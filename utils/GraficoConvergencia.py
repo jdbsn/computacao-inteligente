@@ -20,3 +20,6 @@ class GraficoConvergencia:
         plt.legend()
         plt.grid(True)
         plt.show()
+
+    def resetar(self):
+        self.cenarios.clear()

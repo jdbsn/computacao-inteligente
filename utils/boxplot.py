@@ -14,3 +14,6 @@ class Boxplot:
         plt.xlabel('Cenários', fontsize=12)
         plt.ylabel('Valores das Execuções', fontsize=12)
         plt.show()
+
+    def resetar(self):
+        self.data.clear()

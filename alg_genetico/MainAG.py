@@ -32,7 +32,7 @@ def avaliar_sphere():
 
         for _ in tqdm(range(20), desc=f'{descricao}'):
             algoritmo = AlgoritmoGenetico(TAMANHO_POPULACAO, GERACOES, DIMENSOES, TAXA_CRUZAMENTO, TAXA_MUTACAO, -100, 100, sphere)
-            fitness = algoritmo.alg_genetico(selecao, pontos_corte)
+            fitness = algoritmo.executar(selecao, pontos_corte)
             resultado_cenario.append(fitness)
             valores_convergencia.append(algoritmo.melhores_fitness)
 
@@ -52,7 +52,7 @@ def avaliar_rastrigin():
 
         for _ in tqdm(range(20), desc=f'{descricao}'):
             algoritmo = AlgoritmoGenetico(TAMANHO_POPULACAO, GERACOES, DIMENSOES, TAXA_CRUZAMENTO, TAXA_MUTACAO, -30, 30, rastrigin)
-            fitness = algoritmo.alg_genetico(selecao, pontos_corte)
+            fitness = algoritmo.executar(selecao, pontos_corte)
             resultado_cenario.append(fitness)
             valores_convergencia.append(algoritmo.melhores_fitness)
 
@@ -72,7 +72,7 @@ def avaliar_rosenbrock():
 
         for _ in tqdm(range(20), desc=f'{descricao}'):
             algoritmo = AlgoritmoGenetico(TAMANHO_POPULACAO, GERACOES, DIMENSOES, TAXA_CRUZAMENTO, TAXA_MUTACAO, -5.12, 5.12, rosenbrock)
-            fitness = algoritmo.alg_genetico(selecao, pontos_corte)
+            fitness = algoritmo.executar(selecao, pontos_corte)
             resultado_cenario.append(fitness)
             valores_convergencia.append(algoritmo.melhores_fitness)
 
